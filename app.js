@@ -1,6 +1,7 @@
 const yargs = require('yargs');
 
 const geocode = require('./geocode/geocode');
+const weather = require('./weather/weather');
 
 const argv = yargs.options({
     a: {
@@ -21,9 +22,13 @@ geocode.geocodeAddress(argv.address, (errorMessage, results) => {
   if (errorMessage) {
     console.log(errorMessage);
   } else {
-    console.log(JSON.stringify(results, undefined, 1));
+    console.log(results.address);
+    weather.getWeather(results.latitude, results.longitude, (errorMessage, weatherResults) => {
+      if (errorMessage) {
+        console.log(errorMessage);
+      } else {
+        console.log(JSON.stringify(weatherResults, undefined, 1));
+      }
+    });
   }
 });
-
-// 735c87b18469c5bad03a02c914a918c3
-// https://api.darksky.net/forecast/735c87b18469c5bad03a02c914a918c3/15.3966057,73.8242621
